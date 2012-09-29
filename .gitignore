@@ -1,0 +1,12 @@
+grails-app/conf/Config.groovy
+grails-app/conf/DataSource.groovy
+grails-app/conf/UrlMappings.groovy
+grails-app/services
+grails-app/taglib
+grails-app/utils
+src/java
+target
+target-eclipse
+test/unit
+web-app
+lib

@@ -63,12 +63,12 @@ import org.codehaus.groovy.grails.orm.hibernate.HibernateEventListeners
  * <p/>
  * Release 0.5.4 compatibility issues with Grails 1.3.x
  * <p/>
- * Release 1.0.0
+ * Release 0.5.4.1 compatibility issues with Grails 2.1.x - updated by Andréas Kühne <andreas@kuhne.se>
  * <p/>
  */
 class AuditLoggingGrailsPlugin {
-    def version = "1.0.0-SNAPSHOT"
-    def grailsVersion = '2.0 > *'
+    def version = "0.5.4.1"
+    def grailsVersion = '2.1 > *'
     def author = "Shawn Hartsock"
     def authorEmail = "hartsock@acm.org"
     def title = "adds auditable to GORM domain classes"
@@ -81,31 +81,29 @@ will allow you to take action on what has changed.
 Stable Releases:
     0.5.3 (Grails 1.2 or below)
     0.5.4 (Grails 1.3 or above)
+	0.5.4.1 (Grails 2.1 or above)
     1.0.0 (Grails 2.0 or above)
     """
     def dependsOn = [:]
     def loadAfter = ['core', 'hibernate']
 
     def doWithSpring = {
-        if (manager?.hasGrailsPlugin("hibernate")) {
-            auditLogListener(AuditLogListener) {
-                sessionFactory = sessionFactory
-                verbose = application.config?.auditLog?.verbose ?: false
-                transactional = application.config?.auditLog?.transactional ?: false
-                sessionAttribute = application.config?.auditLog?.sessionAttribute ?: ""
-                actorKey = application.config?.auditLog?.actorKey ?: ""
-            }
-            //PreDeleteEventListener, PostInsertEventListener, PostUpdateEventListener
-            hibernateEventListeners(HibernateEventListeners) {
-                listenerMap = [
-                        'post-insert': auditLogListener,
-                        'post-update': auditLogListener,
-                        'pre-delete': auditLogListener,
-                        'pre-collection-update': auditLogListener,
-                        'pre-collection-remove': auditLogListener,
-                        'post-collection-recreate': auditLogListener]
-            }
-        }
+		if (manager?.hasGrailsPlugin("hibernate")) {
+			auditLogListener(AuditLogListener) {
+				verbose = application.config?.auditLog?.verbose ?: false
+				transactional = application.config?.auditLog?.transactional ?: false
+				sessionAttribute = application.config?.auditLog?.sessionAttribute ?: ""
+				actorKey = application.config?.auditLog?.actorKey ?: ""
+			}
+
+			//PreDeleteEventListener, PostInsertEventListener, PostUpdateEventListener
+			hibernateEventListeners(HibernateEventListeners) {
+				listenerMap = [
+						'post-insert': auditLogListener,
+						'post-update': auditLogListener,
+						'pre-delete': auditLogListener]
+			}
+		}
     }
 
     def doWithApplicationContext = { applicationContext ->
@@ -127,13 +125,19 @@ Stable Releases:
         // TODO Implement registering dynamic methods to classes (optional)
     }
 
+
     def onChange = { event ->
-        // TODO Implement code that is executed when this class plugin class is changed  
-        // the event contains: event.application and event.applicationContext objects
+        // TODO Implement code that is executed when any artefact that this plugin is
+        // watching is modified and reloaded. The event contains: event.source,
+        // event.application, event.manager, event.ctx, and event.plugin.
     }
 
-    def onApplicationChange = { event ->
-        // TODO Implement code that is executed when any class in a GrailsApplication changes
-        // the event contain: event.source, event.application and event.applicationContext objects
+    def onConfigChange = { event ->
+        // TODO Implement code that is executed when the project configuration changes.
+        // The event is the same as for 'onChange'.
+    }
+
+    def onShutdown = { event ->
+        // TODO Implement code that is executed when the application shuts down (optional)
     }
 }

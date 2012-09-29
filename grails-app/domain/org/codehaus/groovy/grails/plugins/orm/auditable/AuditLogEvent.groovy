@@ -1,4 +1,8 @@
 package org.codehaus.groovy.grails.plugins.orm.auditable
+
+import org.joda.time.DateTime
+import org.jadira.usertype.dateandtime.joda.PersistentDateTimeWithZone
+
 /**
  * AuditLogEvents are reported to the AuditLog table
  * this requires you to set up a table or allow
@@ -9,8 +13,8 @@ class AuditLogEvent implements java.io.Serializable {
 
   static auditable = false
 
-  Date dateCreated
-  Date lastUpdated
+  DateTime dateCreated
+  DateTime lastUpdated
 
   String actor
   String uri
@@ -39,6 +43,14 @@ class AuditLogEvent implements java.io.Serializable {
     table 'audit_log'
     cache usage:'read-only', include:'non-lazy'
     version false
+	dateCreated type: PersistentDateTimeWithZone, {
+		column name: "date_created_timestamp"
+		column name: "date_created_zone"
+	}
+	lastUpdated type: PersistentDateTimeWithZone, {
+		column name: "last_updated_timestamp"
+		column name: "last_updated_zone"
+	}
   }
 
   /**
@@ -76,7 +88,7 @@ class AuditLogEvent implements java.io.Serializable {
   }
 
   String toString() {
-    "audit log ${dateCreated} ${actor?'user ${actor}':'user ?'} " + 
+    "audit log ${dateCreated} ${actor?'user ' + actor:'user ?'} " + 
         "${eventName} ${className} " + 
         "id:${persistedObjectId} version:${persistedObjectVersion}"
   }

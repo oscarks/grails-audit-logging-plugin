@@ -36,7 +36,9 @@ import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.hibernate.Session
 import grails.util.Environment
+import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
+import org.joda.time.DateTime
 
 public class AuditLogListener implements PreDeleteEventListener, PostInsertEventListener, PostUpdateEventListener, Initializable {
 
@@ -51,7 +53,6 @@ public class AuditLogListener implements PreDeleteEventListener, PostInsertEvent
     boolean verbose = true // in Config.groovy auditLog.verbose = true
     boolean transactional = false
     Long truncateLength
-    SessionFactory sessionFactory
 
     String sessionAttribute
     String actorKey
@@ -479,8 +480,8 @@ public class AuditLogListener implements PreDeleteEventListener, PostInsertEvent
      */
     def saveAuditLog = { AuditLogEvent audit ->
         audit.with {
-            dateCreated = new Date()
-            lastUpdated = new Date()
+            dateCreated = new DateTime()
+            lastUpdated = new DateTime()
         }
         log.info audit
         try {
@@ -490,7 +491,7 @@ public class AuditLogListener implements PreDeleteEventListener, PostInsertEvent
             // sessions or you can essentially roll-back your audit log saves. This is
             // why you have to open your own session and transaction on some
             // transactional databases and not others.
-            Session session = sessionFactory.openSession()
+            Session session = ApplicationHolder.application.mainContext.getBean("sessionFactory").openSession()
             log.trace "opened new session for audit log persistence"
             def trans = null
             if (transactional) {
