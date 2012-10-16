@@ -35,8 +35,8 @@ class AuditLogEvent implements java.io.Serializable {
     persistedObjectVersion(nullable:true)
     eventName(nullable:true)
     propertyName(nullable:true)
-    oldValue(nullable:true)
-    newValue(nullable:true)
+    oldValue(nullable:true, maxSize: 65535)
+    newValue(nullable:true, maxSize: 65535)
   }
 
   static mapping = {
