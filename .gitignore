@@ -10,3 +10,4 @@ target-eclipse
 test/unit
 web-app
 lib
+.settings
