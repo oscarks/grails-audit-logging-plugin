@@ -1,4 +1,4 @@
-<plugin name='audit-logging' version='0.5.4.1' grailsVersion='1.1 &gt; *'>
+<plugin name='audit-logging' version='0.5.4.1' grailsVersion='2.2.0 &gt; *'>
   <author>Shawn Hartsock</author>
   <authorEmail>hartsock@acm.org</authorEmail>
   <title>adds auditable to GORM domain classes</title>
@@ -13,15 +13,48 @@ Stable Releases:
     0.5.4 (Grails 1.3 or above)
 
     </description>
+  <type>AuditLoggingGrailsPlugin</type>
   <resources>
-    <resource>UrlMappings</resource>
     <resource>org.codehaus.groovy.grails.plugins.orm.auditable.AuditLogEventController</resource>
     <resource>org.codehaus.groovy.grails.plugins.orm.auditable.AuditLogEvent</resource>
   </resources>
+  <repositories>
+    <repository name='grailsCentral' url='http://grails.org/plugins' />
+    <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
+  </repositories>
   <dependencies>
-    <resolvers>
-      <resolver type='grailsPlugins' name='grailsPlugins' />
-    </resolvers>
+    <test>
+      <dependency group='net.sourceforge.cobertura' name='cobertura' version='1.9.4.1' />
+    </test>
+    <compile>
+      <dependency group='org.jadira.usertype' name='usertype.jodatime' version='1.9' />
+    </compile>
   </dependencies>
+  <plugins>
+    <test>
+      <plugin group='org.grails.plugins' name='code-coverage' version='1.2.5' />
+    </test>
+    <compile>
+      <plugin group='org.grails.plugins' name='spring-security-acl' version='1.1.1' />
+      <plugin group='org.grails.plugins' name='spring-security-core' version='1.2.7.3' />
+      <plugin group='org.grails.plugins' name='joda-time' version='1.4' />
+      <plugin group='org.grails.plugins' name='mysql-connectorj' version='5.1.22.1' />
+      <plugin group='org.grails.plugins' name='pretty-time' version='0.3' />
+      <plugin group='org.grails.plugins' name='magic-numbers' version='0.2.3' />
+      <plugin group='org.grails.plugins' name='multi-tenant-single-db' version='0.8.3' />
+      <plugin group='org.grails.plugins' name='cache' version='1.0.1' />
+      <plugin group='org.grails.plugins' name='commentable' version='0.8.1' />
+    </compile>
+    <runtime>
+      <plugin group='org.grails.plugins' name='jquery' version='1.8.3' />
+      <plugin group='org.grails.plugins' name='resources' version='1.1.6' />
+      <plugin group='org.grails.plugins' name='database-migration' version='1.3.2' />
+      <plugin group='org.grails.plugins' name='hibernate' version='2.2.3' />
+    </runtime>
+    <build>
+      <plugin group='org.grails.plugins' name='tomcat' version='2.2.3' />
+    </build>
+  </plugins>
+  <runtimePluginRequirements />
   <behavior />
 </plugin>
