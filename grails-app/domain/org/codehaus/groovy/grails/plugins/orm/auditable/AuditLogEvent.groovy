@@ -51,6 +51,8 @@ class AuditLogEvent implements java.io.Serializable {
 		column name: "last_updated_timestamp"
 		column name: "last_updated_zone"
 	}
+	oldValue type: "text"
+	newValue type: "text"
   }
 
   /**
