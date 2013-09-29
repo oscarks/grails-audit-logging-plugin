@@ -1,3 +1,4 @@
+grails.project.dependency.resolver = "maven"
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
@@ -27,13 +28,11 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-		runtime ":hibernate:$grailsVersion"
+		runtime ":hibernate:3.6.10.M3"
 		
 		compile ":joda-time:1.4"
 
-		build(":tomcat:$grailsVersion",
-              ":release:2.2.0",
-              ":rest-client-builder:1.0.2") {
+		build(":tomcat:7.0.40.1") {
             export = false
         }
     }
